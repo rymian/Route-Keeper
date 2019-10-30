@@ -1,5 +1,13 @@
+:root {
+    --background-color: #EAF1F9;
+    --lightgray-color: #EEF2F3;
+    --darkgray-color: #6D757D;
+    --yellow-color: #FED867;
+}
+
+
 body {
-    background-color: #ECF1F1;
+    background-color: var(--background-color, lightgray);
 }
 
 .navbar {
@@ -16,7 +24,7 @@ body {
 #search-item {
     margin-right: 8px;
 
-    background-color: #EEF2F3;
+    background-color: var(--lightgray-color, lightgray);
     border-radius: 22px;
 
     display: flex;
@@ -27,16 +35,22 @@ body {
 #search-item input {
     width: 28vw;
 
-    background-color: #EEF2F3;
+    background-color: var(--lightgray-color, lightgray);
     border-radius: 22px;
     border: none;
+}
+
+#search-item input:focus {
+    outline: none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
 }
 
 #search-item i {
     margin-left: 8px;
     margin-right: 16px;
 
-    color: #6D757D;
+    color: var(--darkgray-color, darkgray);
 }
 
 #profile-item {
@@ -49,7 +63,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    background-color: #FED867;
+    background-color: var(--yellow-color, yellow);
     border-radius: 50%;
 
     font-size: 22px;
@@ -67,7 +81,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    background-color: #FED867;
+    background-color: var(--yellow-color, yellow);
 
     border-radius: 24px;
 }
