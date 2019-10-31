@@ -11,8 +11,8 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <div class="nav-container">
-            <nav class="navbar fixed-top navbar-light bg-light">
+        <div id="nav-container">
+            <nav class="navbar navbar-light bg-light">
                 <div class="nav-items-left ml-0">
                     <div class="input-group" id="search-item">
                         <input class="form-control" type="text" placeholder="Search" aria-label="Search">
@@ -30,8 +30,18 @@
                 </div>
             </nav>
         </div>
-        <div class="main-container"></div>
-        <div class="detail-container"></div>
+        <div class="row" id="main-container">
+            <div class="col-6 col-md-4" id="route-countainer">.col-6 .col-md-4</div>
+            <div class="col-12 col-sm-6 col-md-8" id="detail-container">
+                <div class="card" id="detail-card">
+                    <img src="https://cartoblography.files.wordpress.com/2013/07/mapbox-streets-london.jpg" class="card-img-top" alt="route-map">
+                    <div class="card-body">
+                        <h1>Route</h1>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

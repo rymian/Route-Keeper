@@ -8,10 +8,22 @@
 
 body {
     background-color: var(--background-color, lightgray);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+#nav-container {
+    width: 100vw;
 }
 
 .navbar {
     min-height: 64px;
+
+    padding-left: 32px;
+    padding-right: 32px;
 }
 
 .nav-items-left {
@@ -96,3 +108,36 @@ body {
 
     font-weight: bold;
 }
+
+#main-container {
+    min-height: calc(100vh - 128px);
+
+    margin: 32px;
+}
+
+#detail-container {
+    min-height: 100%;
+
+    padding: 0;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#detail-card {
+    width: 75%;
+    height: 96%;
+
+    border: none;
+    border-radius: 24px;
+}
+
+#detail-card .card-img-top {
+    border-radius: 24px 24px 0px 0px;
+}
+
+#detail-card .card-body h1 {
+    font-weight: bold;
+}
+
