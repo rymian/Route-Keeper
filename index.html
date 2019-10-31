@@ -7,14 +7,46 @@
         <title>Route Keeper</title>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <h1>Route Keeper</h1>
+        <div id="nav-container">
+            <nav class="navbar navbar-light bg-light">
+                <div class="nav-items-left ml-0">
+                    <div class="input-group" id="search-item">
+                        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="nav-item" id="profile-item">
+                        <i class="fa fa-user"></i>
+                    </div>
+                </div>
+                <div class="nav-item mr-0" id="create-item">
+                    <a class="nav-link" href="#">Create</a>
+                    <i class="fa fa-plus"></i>
+                </div>
+            </nav>
+        </div>
+        <div class="row" id="main-container">
+            <div class="col-6 col-md-4" id="route-container"></div>
+            <div class="col-12 col-sm-6 col-md-8" id="detail-container">
+                <div class="card" id="detail-card">
+                    <img src="https://cartoblography.files.wordpress.com/2013/07/mapbox-streets-london.jpg" class="card-img-top" alt="route-map">
+                    <div class="card-body">
+                        <h1>Route</h1>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	      <p>Created by Ryan Anderson and Seth Little</p>
+        <script src="render.js" type="module"></script>
     </body>
 </html>
