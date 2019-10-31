@@ -112,22 +112,48 @@ body {
 #main-container {
     min-height: calc(100vh - 128px);
 
-    margin: 32px;
+    margin: 32px 0px 0px 32px;
+}
+
+#route-container {
+    max-height: calc(100vh - 96px);
+    padding-right: 17px;
+
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#route-container::-webkit-scrollbar {
+    display: none;
+}
+
+.route-cell {
+    margin-top: 8px;
+    margin-bottom: 8px;
+
+    border: none;
+    border-radius: 12px;
+}
+
+.route-cell:last-child {
+    margin-bottom: 32px;
 }
 
 #detail-container {
     min-height: 100%;
 
+    margin-bottom: 32px;
     padding: 0;
 
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
 }
 
 #detail-card {
     width: 75%;
-    height: 96%;
+    height: 100%;
 
     border: none;
     border-radius: 24px;
