@@ -1,6 +1,6 @@
 :root {
-    --background-color: #EAF1F9;
-    --lightgray-color: #EEF2F3;
+    --background-color: #EEF2F3;
+    --lightgray-color: #E6EAEB;
     --darkgray-color: #6D757D;
     --yellow-color: #FED867;
     --teal-color: #029FB8;
@@ -118,8 +118,53 @@ body {
     margin: 32px 0px 0px 32px;
 }
 
+#filter-container {
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#filter-btn-group {
+    height: 38px;
+    width: 80%;
+    margin: 0px 16px 32px 16px;
+
+    background-color: var(--lightgray-color, lightgray);
+
+    border-radius: 32px;
+}
+
+.btn-secondary {
+    width: 33.3%;
+
+    background-color: var(--lightgray-color, lightgray);
+
+    color: black;
+    font-weight: 500;
+
+    border-style: none;
+    border-radius: 32px;
+}
+
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active:focus {
+    background-color: var(--yellow-color, yellow);
+    color: black;
+    font-weight: bolder;
+
+    box-shadow: none !important;
+
+    border-style: none !important;
+    border-radius: 32px !important;
+}
+
+#content-container {
+    margin: 0;
+}
+
 #route-container {
-    max-height: calc(100vh - 96px);
+    max-height: calc(100vh - 166px);
     padding: 0;
 
     display: flex;
