@@ -6,12 +6,28 @@ var path = require('path');
 
 var app = express();
 
+//create functionality for both public and private dbs
+
+//SQL functionality
+// Id - autoiincrememt
+// Coordinates - 2d array
+//  user - text - not null default ""
+// Location - text - not null default ""
+// Distance - double - not null default 0.0
+// Elevation - double - not null - default 0.0
+// Favorites - int - default 0 - not null
+// isPrivate - boolean default false - not null
+
+// Node server.js
+
+
+
 //Define db to be a connection
 var connection = mysql.createConnection({
 	host     : 'localhost',
 	port 	 : '3306',
 	user     : 'root',
-	password : 'cookies99',
+	password : '',
   	database : 'login'
 });
 
