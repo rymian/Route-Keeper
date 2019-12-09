@@ -5,9 +5,11 @@ export default class Route {
         this.name = name;
         this.coordinates = coordinates;
 
-        this.location = "";
+        this.user = "User";
+        this.location = "Location";
+        this.date;
         this.distance = 0.0;
-        this.elevationChange = 0.0;
+        this.elevation = 0.0;
         this.favorites = 0;
         this.isPrivate = true;
     }
