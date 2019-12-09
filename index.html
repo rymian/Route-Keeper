@@ -31,9 +31,18 @@
                 </div>
             </nav>
         </div>
-        <div class="row" id="main-container">
-            <div class="col-6 col-md-5" id="route-container"></div>
-            <div class="col-12 col-sm-6 col-md-7" id="detail-container"></div>
+        <div id="main-container">
+            <div class="col-6 col-md-5" id="filter-container">
+                <div class="btn-group" id="filter-btn-group">
+                    <button type="button" class="btn btn-secondary">Results</button>
+                    <button type="button" class="btn btn-secondary">Favorite</button>
+                    <button type="button" class="btn btn-secondary">You</button>
+                </div>
+            </div>
+            <div class="row" id="content-container">
+                <div class="col-6 col-md-5" id="route-container"></div>
+                <div class="col-12 col-sm-6 col-md-7" id="detail-container"></div>
+            </div>
         </div>
 
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->

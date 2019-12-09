@@ -1,0 +1,92 @@
+#table-container {
+    height: 100%;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#table-container::-webkit-scrollbar {
+    display: none;
+}
+
+.route-cell-card {
+    width: 80%;
+    margin: 8px 16px;
+
+    display: block;
+
+    border: none;
+    border-radius: 16px;
+
+    transition: all .2s ease-in-out;
+}
+
+.route-cell-card:first-child {
+    margin-top: 0px;
+}
+
+.route-cell-card:last-child {
+    margin-bottom: 32px;
+}
+
+.route-cell-card:hover, .route-cell-card:focus {
+    transform: scale(1.05);
+    box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.25);
+}
+
+.route-cell-card:first-child:hover, .route-cell-card:first-child:focus {
+    margin-top: 16px;
+}
+
+.route-cell-card:hover .route-cell-body, .route-cell-card:focus .route-cell-body {
+    background-color: var(--teal-color, green);
+
+    color: white;
+    font-weight: bold;
+}
+
+.route-cell-body {
+    width: 100%;  
+
+    padding: 16px;
+
+    border-radius: 16px;
+}
+
+.route-cell-body .horizontal {
+    justify-content: space-between;
+}
+
+.route-cell-body .vertical {
+    align-items: flex-start;
+}
+
+.route-cell-name {
+    margin-bottom: 4px;
+
+    font-size: 1.5em;
+    font-weight: 600;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: block;
+    line-height: 1em; /* a */
+    max-height: 2em;
+}
+
+.route-cell-location {
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+.route-cell-distance {
+    font-size: 2.4em;
+    font-weight: 600;
+}
