@@ -7,7 +7,6 @@ export default class Route {
 
         this.user = "User";
         this.location = "Location";
-        this.date;
         this.distance = 0.0;
         this.elevation = 0.0;
         this.favorites = 0;
