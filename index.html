@@ -8,10 +8,17 @@
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
-        <link rel="stylesheet" href="style.css" />
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="table/table.css" />
+        <link rel="stylesheet" type="text/css" href="compose/compose.css" />
+        <link rel="stylesheet" type="text/css" href="detail/detail.css" />
     </head>
     <body>
+        <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.0/mapbox-gl-draw.js'></script>
+        <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.0/mapbox-gl-draw.css' type='text/css'/>
+
         <div id="nav-container">
             <nav class="navbar navbar-light bg-light">
                 <div class="nav-items-left ml-0">
@@ -26,7 +33,7 @@
                     </div>
                 </div>
                 <div class="nav-item mr-0" id="create-item">
-                    <a class="nav-link" href="#">Create</a>
+                    <div class="action-title">Create</div>
                     <i class="fa fa-plus"></i>
                 </div>
             </nav>
@@ -35,21 +42,97 @@
             <div class="col-6 col-md-5" id="filter-container">
                 <div class="btn-group" id="filter-btn-group">
                     <button type="button" class="btn btn-secondary">Results</button>
-                    <button type="button" class="btn btn-secondary">Favorite</button>
+                    <button type="button" class="btn btn-secondary">Favorites</button>
                     <button type="button" class="btn btn-secondary">You</button>
                 </div>
             </div>
             <div class="row" id="content-container">
-                <div class="col-6 col-md-5" id="route-container"></div>
-                <div class="col-12 col-sm-6 col-md-7" id="detail-container"></div>
+                <div class="col-6 col-md-5" id="table-container"></div>
+                <div class="col-12 col-sm-6 col-md-7" id="detail-container">
+                    <div class="card" id="detail-card">
+                        <div id='detail-map'></div>
+                        <div class ="detail-actions">
+                            <div class ="detail-action" id="favorite-action">
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class ="detail-action" id="share-action">
+                                <i class="fa fa-share-alt"></i>
+                            </div>
+                        </div>
+                        <div class="card-body" id="detail-body">
+                            <div class="horizontal">
+                                <div id="detail-user"></div>
+                                <div class="separator"></div>
+                                <i class="fa fa-star" id="detail-favorites-descriptor"></i>
+                                <div id="detail-favorites"></div>
+                            </div>
+                            <div id="detail-name"></div>
+                            <div class="horizontal">
+                                <div class="detail-descriptor">Location</div>
+                                <div class="guide"></div>
+                                <div id="detail-location"></div>
+                            </div>
+                            <div class="horizontal">
+                                <div class="detail-descriptor">Distance</div>
+                                <div class="guide"></div>
+                                <div id="detail-distance"></div>
+                            </div>
+                            <div class="horizontal">
+                                <div class="detail-descriptor">Elevation</div>
+                                <div class="guide"></div>
+                                <div id="detail-elevation"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <div class="overlay" id="compose-overlay">
+            <div id="compose-container">
+                <div id="compose-title">New Route</div>
+                <div id="compose-map"></div>
+                <div id='calculated-line'></div>
+                <div class="horizontal" id="compose-actions">
+                    <div class="compose-action" id="cancel-action">
+                        <div class="action-title">Cancel</div>
+                    </div>
+                    <div class="compose-action" id="publish-action">
+                        <div class="action-title">Publish</div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="card" id="compose-card">
+                <div class="card-header" id="compose-header">
+                    <h3>New Route</h3>
+                </div>
+                
+                <div class="card-body" id="compose-body">
+                    
+                    <div class='info-box'>
+                        <p>Draw your route using the draw tools (25 points max)</p>
+                        <div id='calculated-line'></div>
+                    </div>
+                </div>
+                <div class="card-footer" id="compose-footer">
+                    <div class="compose-actions" id="cancel-action">
+                        <div class="action-title">Cancel</div>
+                    </div>
+                    <div class="compose-actions" id="publish-action">
+                        <div class="action-title">Publish</div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
-        <script src="render.js" type="module"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="map.js" type="module"></script>
+        <script src="detail/detail.js" type="module"></script>
+        <script src="table/table.js" type="module"></script>
+        <script src="compose/compose.js" type="module"></script>
+        <script src="script.js" type="module"></script>
     </body>
 </html>
