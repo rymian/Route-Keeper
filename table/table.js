@@ -121,5 +121,6 @@ const selectRouteCell = function(event) {
 };
 
 $(function() {
-    fetchRoutes()
+    // fetchRoutes()
+    loadTable();
 });

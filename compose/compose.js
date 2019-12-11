@@ -1,5 +1,8 @@
 import Route from "../route.js";
 import { prependRoute } from "../table/table.js";
+// import { insertPublicRoute } from "../server.js";
+var inserts = require('../server.js');
+console.log(inserts);
 
 const create = $('#create-item');
 const composeOverlay = $('#compose-overlay')
@@ -229,6 +232,7 @@ const publishRoute = function() {
         console.log("Elevation: " + elevation + "ft");
 
         const route = new Route(name, geometry, location, distance, elevation);
+        insertPublicRoute(route);
         prependRoute(route);
         dismissComposeOverlay();
     } else {
