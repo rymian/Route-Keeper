@@ -1,0 +1,61 @@
+#filter-container {
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#filter-btn-group {
+    height: 38px;
+    width: 80%;
+    margin: 0px 16px 32px 16px;
+
+    background-color: var(--lightgray-color, lightgray);
+
+    border-radius: 32px;
+}
+
+.btn-secondary {
+    width: 33.3%;
+
+    background-color: var(--lightgray-color, lightgray);
+
+    color: black;
+    font-weight: 500;
+
+    border-style: none;
+    border-radius: 32px !important;
+}
+
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active:focus {
+    background-color: var(--yellow-color, yellow);
+    color: black;
+    font-weight: bolder;
+
+    box-shadow: none !important;
+
+    border-style: none !important;
+    border-radius: 32px !important;
+}
+
+.selected {
+    background-color: var(--yellow-color, yellow);
+    color: black;
+    font-weight: bolder;
+
+    box-shadow: none !important;
+
+    border-style: none !important;
+    border-radius: 32px !important;
+}
+
+.unselected {
+    background-color: var(--lightgray-color, lightgray);
+
+    color: black;
+    font-weight: 500;
+
+    border-style: none;
+    border-radius: 32px !important;
+}

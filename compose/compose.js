@@ -1,12 +1,25 @@
+import Route from "../route.js";
+import { prependRoute } from "../table/table.js";
+
 const create = $('#create-item');
 const composeOverlay = $('#compose-overlay')
 const cancel = $('#cancel-action');
 const publish = $('#publish-action');
+const composeName = $('#compose-name');
 
 var map;
 var draw;
 
+var isMetric = false;
+
+var geometry;
+var location;
+var distance;
+var elevation;
+
 const setCompose = function() {
+    composeName.val("");
+
     setMap();
 }
 
@@ -29,21 +42,54 @@ function getMatch(e) {
     req.open('GET', url, true);
     req.onload  = function() {
         var jsonResponse = req.response;
-        var distance = (jsonResponse.routes[0].distance*0.001).toFixed(2); // convert to km
-        var duration = jsonResponse.routes[0].duration/60; // convert to minutes
 
-        // add results to info box
-        document.getElementById('calculated-line').innerHTML = 'Distance: ' + distance + ' km<br>Duration: ' + duration.toFixed(2) + ' minutes';
-        var coordinates = jsonResponse.routes[0].geometry;
+        distance = (isMetric ? (jsonResponse.routes[0].distance*0.001) : ((jsonResponse.routes[0].distance*0.001)/1.609)).toFixed(1);
+        geometry = jsonResponse.routes[0].geometry;
+        calculateElevation(geometry.coordinates[0][0],geometry.coordinates[0][1]);
+        determineLocation(geometry.coordinates[0][0],geometry.coordinates[0][1]);
 
-        // elevation = getElevation(coordinates.coordinates[0][0],coordinates.coordinates[0][1]);
-        // add the route to the map
-        addRoute(coordinates);
+        // add the path to the map
+        addPath(geometry);
     };
     req.send();
 }
 
-function addRoute (coordinates) {
+function calculateElevation(lng,lat) {
+    // make API request
+    var query = 'https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/' + lng + ',' + lat + '.json?layers=contour&limit=50&access_token=' + mapboxgl.accessToken;
+    axios({
+        method: 'get',
+        url: query,
+    }).then(function(response) {
+        // Get all the returned features
+        var allFeatures = response.data.features;
+
+        // Create an empty array to add elevation data to
+        var elevations = [];
+
+        // For each returned feature, add elevation data to the elevations array
+        allFeatures.forEach(feature => {
+            elevations.push(feature.properties.ele);
+        });
+
+        // In the elevations array, find the largest value
+        elevation = isMetric ? Math.max(...elevations).toFixed(0) : (Math.max(...elevations)*3.281).toFixed(0);
+    });
+}
+
+function determineLocation(lng,lat) {
+    var query = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?access_token=' + mapboxgl.accessToken;
+    axios({
+        method: 'get',
+        url: query,
+    }).then(function(response) {
+        // Get all the returned features
+        const place = response.data.features[3].place_name;
+        location = place.substr(0, place.lastIndexOf("\,"));
+    });
+}
+
+function addPath (coordinates) {
     // check if the route is already loaded
     if (map.getSource('route')) {
         map.removeLayer('route')
@@ -78,6 +124,8 @@ function removeRoute () {
         map.removeLayer('route');
         map.removeSource('route');
         document.getElementById('calculated-line').innerHTML = '';
+
+        resetRouteProperties();
     } else  {
         return;
     }
@@ -87,9 +135,15 @@ const setMap = function(center) {
     map = new mapboxgl.Map({
         container: 'compose-map',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-122.675246,45.529431],
-        zoom: 13, 
-        minZoom: 11
+        center: [-96, 37.8],
+        zoom: 3
+    });
+
+    var currentLocation = new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true
     });
 
     draw = new MapboxDraw({
@@ -134,12 +188,20 @@ const setMap = function(center) {
             },
         ]
     });
-             
+
+    map.addControl(currentLocation);     
     map.addControl(draw);
 
     map.on('draw.create', updateRoute);
     map.on('draw.update', updateRoute);
     map.on('draw.delete', removeRoute);
+}
+
+const resetRouteProperties = function() {
+    geometry = null;
+    location = null;
+    distance = null;
+    elevation = null;
 }
 
 /* Actions */
@@ -151,14 +213,44 @@ const presentComposeOverlay = function() {
 }
 
 const dismissComposeOverlay = function() {
+    resetRouteProperties();
+
     composeOverlay.css("display", "none");
 }
 
 const publishRoute = function() {
+    const name = titleCase(composeName.val());
 
+    if (name.length !== 0 && geometry != null) {
+        console.log("Name: " + name);
+        console.log("Geometry: " + geometry.coordinates);
+        console.log("Location: " + location);
+        console.log("Distance: " + distance + "mi");
+        console.log("Elevation: " + elevation + "ft");
+
+        const route = new Route(name, geometry, location, distance, elevation);
+        prependRoute(route);
+        dismissComposeOverlay();
+    } else {
+        console.log("Please fill in required fields.");
+    }
 }
+
+/* Helper */
+
+function titleCase(str) {
+    var splitStr = str.toLowerCase().split(' ');
+    for (var i = 0; i < splitStr.length; i++) {
+        // You do not need to check if i is larger than splitStr length, as your for does that for you
+        // Assign it back to the array
+        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+    }
+    // Directly return the joined string
+    return splitStr.join(' '); 
+ }
 
 $(function() {
     create.on("click", presentComposeOverlay);
     cancel.on("click", dismissComposeOverlay);
+    publish.on("click", publishRoute);
 });
