@@ -1,16 +1,15 @@
 export default class Route {
 
-    constructor(id, name, coordinates) {
-        this.id = id;
+    constructor(name, geometry, location, distance, elevation) {
         this.name = name;
-        this.coordinates = coordinates;
+        this.geometry = geometry;
+        this.location = location;
+        this.distance = distance
+        this.elevation = elevation
 
+        this.id = 0;
         this.user = "User";
-        this.location = "Location";
-        this.distance = 0.0;
-        this.elevation = 0.0;
-        this.favorites = 0;
-        this.isPrivate = true;
+        this.favorites = [];
     }
 
 }
