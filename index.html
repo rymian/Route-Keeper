@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="table/table.css" />
         <link rel="stylesheet" type="text/css" href="compose/compose.css" />
         <link rel="stylesheet" type="text/css" href="detail/detail.css" />
+        <link rel="stylesheet" type="text/css" href="filter/filter.css" />
     </head>
     <body>
         <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.0/mapbox-gl-draw.js'></script>
@@ -41,9 +42,9 @@
         <div id="main-container">
             <div class="col-6 col-md-5" id="filter-container">
                 <div class="btn-group" id="filter-btn-group">
-                    <button type="button" class="btn btn-secondary">Results</button>
-                    <button type="button" class="btn btn-secondary">Favorites</button>
-                    <button type="button" class="btn btn-secondary">You</button>
+                    <button type="button" class="btn btn-secondary" id="filter-results">Results</button>
+                    <button type="button" class="btn btn-secondary" id="filter-favorites">Favorites</button>
+                    <button type="button" class="btn btn-secondary" id="filter-you">You</button>
                 </div>
             </div>
             <div class="row" id="content-container">
@@ -113,6 +114,7 @@
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="script.js" type="module"></script>
         <script src="detail/detail.js" type="module"></script>
+        <script src="filter/filter.js" type="module"></script>
         <script src="table/table.js" type="module"></script>
         <script src="compose/compose.js" type="module"></script>
     </body>
