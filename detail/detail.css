@@ -92,6 +92,10 @@
     font-weight: 600;
 }
 
+#detail-location {
+    font-size: 1.4em;
+}
+
 .detail-actions {
     height: 64px;
 

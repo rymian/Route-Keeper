@@ -29,24 +29,46 @@ const renderRouteCell = function(route) {
 /* Loads RouteCells into the table */
 
 const loadRouteCells = function() {
-    fetchRoutes().forEach(route => {
-        let cell = renderRouteCell(route);
-        table.append(cell);
-    })
+    // fetchRoutes().forEach(route => {
+    //     appendRoute(route);
+    // })
 
-    setDetail(routes[0]);
-    table.on("click",".route-cell-card", selectRouteCell);
+    // setDetail(routes[0]);
 };
 
 const fetchRoutes = function() {
     routes = [];
 
     for(var i=0; i < 36; i++) {
-        let route = new Route(i, `Route #${i+1}`, 0.0);
+        let route = new Route(`Route #${i+1}`, [[0.0,0.0]], 'Location', 0, 0);
+        route.id = i;
         routes.push(route);
     }
 
     return routes;
+}
+
+const appendRoute = function(route) {
+    let cell = renderRouteCell(route);
+        table.append(cell);
+        table.on("click",".route-cell-card", selectRouteCell);
+}
+
+export const prependRoute = function(route) {
+    if (routes == null) {
+        routes = [];
+        route.id = 0;
+    } else {
+        route.id = routes.length;
+    }
+    routes.push(route);
+
+    let cell = renderRouteCell(route);
+    table.prepend(cell);
+    table.on("click",".route-cell-card", selectRouteCell);
+
+    lastSelectedId = route.id;
+    setDetail(route);
 }
 
 /* Actions */
@@ -65,5 +87,5 @@ const selectRouteCell = function(event) {
 };
 
 $(function() {
-   loadRouteCells();
+    loadRouteCells();
 });
