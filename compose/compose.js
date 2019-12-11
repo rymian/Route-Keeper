@@ -2,11 +2,14 @@ const create = $('#create-item');
 const composeOverlay = $('#compose-overlay')
 const cancel = $('#cancel-action');
 const publish = $('#publish-action');
+const composeName = $('#compose-name');
 
 var map;
 var draw;
 
 const setCompose = function() {
+    composeName.val("");
+
     setMap();
 }
 
