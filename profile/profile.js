@@ -24,6 +24,10 @@ const setProfile = function() {
     deleteButton.on("click", deleteAction);
     deleteButton.hide();
 
+    profileUsername.val("");
+    profileEmail.val("");
+    profilePassword.val("");
+
     loginAction();
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -174,6 +178,8 @@ const successfulAuth = function() {
 const presentProfileOverlay = function() {
     isExistingUser = true;
     profileOverlay.css("display", "flex");
+
+    setProfile();
 }
 
 const dismissProfileOverlay = function() {
