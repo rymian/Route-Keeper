@@ -98,11 +98,20 @@
                 <div id="compose-map"></div>
                 <div id='calculated-line'></div>
                 <div class="horizontal" id="compose-actions">
-                    <div class="compose-action" id="cancel-action">
-                        <div class="action-title">Cancel</div>
+                    <div class="compose-action-group"> 
+                        <div id="compose-slider-label">Make Public</div>
+                        <label class="switch" id="compose-slider-group">
+                            <input type="checkbox" id="compose-slider" checked>
+                            <span class="slider round"></span>
+                        </label>
                     </div>
-                    <div class="compose-action" id="publish-action">
-                        <div class="action-title">Publish</div>
+                    <div class="compose-action-group">
+                        <div class="compose-action" id="cancel-action">
+                            <div class="action-title">Cancel</div>
+                        </div>
+                        <div class="compose-action" id="publish-action">
+                            <div class="action-title">Publish</div>
+                        </div>
                     </div>
                 </div>
             </div>
