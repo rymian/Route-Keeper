@@ -1,3 +1,5 @@
+import { fetchRoutes } from "../table/table.js";
+
 const profile = $('#profile-item');
 const profileCancel = $('#profile-cancel-button');
 const profileOverlay = $('#profile-overlay');
@@ -149,6 +151,7 @@ const logoutAction = function() {
         profile.children('i').removeClass();
         profile.children('i').addClass("fa fa-user-o");
 
+        fetchRoutes();
         dismissProfileOverlay();
     }).catch(function(error) {
         console.log(error);
@@ -162,6 +165,7 @@ const deleteAction = function() {
         profile.children('i').removeClass();
         profile.children('i').addClass("fa fa-user-o");
 
+        fetchRoutes();
         dismissProfileOverlay();
     }).catch(function(error) {
         console.log(error)
