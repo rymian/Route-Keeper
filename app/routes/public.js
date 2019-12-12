@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(app) {
-    var routeList = require('../controller/appController');
+    var routeList = require('../controller/publicAppController.js');
 
     app.route('/public/routes')
     .get(routeList.list_all_routes)

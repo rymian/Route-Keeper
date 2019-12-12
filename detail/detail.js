@@ -12,12 +12,20 @@ const detailFavorites = $('#detail-favorites');
 
 const favorite = $('#favorite-action');
 const share = $('#share-action');
+const deleteButton = $('#delete-action');
 
 var detailRoute;
 
 export const setDetail = function(route) {
     favorite.unbind('click');
     share.unbind('click');
+    deleteButton.unbind('click');
+
+    if (getFilter() === "you") {
+        deleteButton.show();
+    } else {
+        deleteButton.hide();
+    }
 
     detailRoute = route;
 
@@ -28,9 +36,10 @@ export const setDetail = function(route) {
     setDistance();
     setElevation();
     setFavorites();
-    
+
     favorite.on("click", favoriteAction);
     share.on("click", shareAction);
+    deleteButton.on("click", deleteAction);
 }
 
 const setMap = function() {
@@ -112,43 +121,64 @@ const setElevation = function() {
 
 const setFavorites = function() {
     detailFavorites.text(`${detailRoute.favorites.length}`);
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            if (detailRoute.favorites.includes(user.displayName)) {
+                favorite.children('i').removeClass();
+                favorite.children('i').addClass("fa fa-star");
+            } else {
+                favorite.children('i').removeClass();
+                favorite.children('i').addClass("fa fa-star-o");
+            }
+        } else {
+            if (firebase.auth().currentUser.displayName != null) {
+                if (detailRoute.favorites.includes(firebase.auth().currentUser.displayName)) {
+                    favorite.children('i').removeClass();
+                    favorite.children('i').addClass("fa fa-star");
+                } else {
+                    favorite.children('i').removeClass();
+                    favorite.children('i').addClass("fa fa-star-o");
+                }
+            }
+        }
+    });
 }
 
 /* Actions */
 
 const favoriteAction = function() {
-    // TODO: Add the actual username
-    if (!detailRoute.favorites.includes("User")) {
-        detailRoute.favorites.push("User")
-    } else {
-        const targetIndex = detailRoute.favorites.indexOf("User");
-        detailRoute.favorites.splice(targetIndex,1);
+    if (firebase.auth().currentUser.displayName != null) {
+        if (!detailRoute.favorites.includes(firebase.auth().currentUser.displayName)) {
+            detailRoute.favorites.push(firebase.auth().currentUser.displayName)
+        } else {
+            const targetIndex = detailRoute.favorites.indexOf(firebase.auth().currentUser.displayName);
+            detailRoute.favorites.splice(targetIndex,1);
+        }
+
+        var geometryJSON = JSON.stringify(detailRoute.geometry);
+        var favoritesJSON = JSON.stringify(detailRoute.favorites);
+        var query = detailRoute.isPublic ? 'http://localhost:3000/public/routes/' : 'http://localhost:3000/private/routes/';
+
+        axios({
+            method: 'put',
+            url: query + detailRoute.id,
+            data: {
+                "name": detailRoute.name,
+                "geometry": geometryJSON,
+                "location": detailRoute.location,
+                "distance": detailRoute.distance,
+                "elevation": detailRoute.elevation,
+                "user": detailRoute.user,
+                "favorites": favoritesJSON
+            }
+        }).then(function(response) {
+            if (getFilter() === "favorites") {
+                fetchRoutes();
+            }
+            setFavorites(detailRoute.favorites);
+        });
     }
-
-    var geometryJSON = JSON.stringify(detailRoute.geometry);
-    var favoritesJSON = JSON.stringify(detailRoute.favorites);
-    var isPublic = true;
-    var query = isPublic ? 'http://localhost:3000/public/routes/' : 'http://localhost:3000/private/routes/';
-
-    axios({
-        method: 'put',
-        url: query + detailRoute.id,
-        data: {
-            "name": detailRoute.name,
-            "geometry": geometryJSON,
-            "location": detailRoute.location,
-            "distance": detailRoute.distance,
-            "elevation": detailRoute.elevation,
-            "user": detailRoute.user,
-            "favorites": favoritesJSON
-        }
-    }).then(function(response) {
-        if (getFilter() === "favorites") {
-            fetchRoutes();
-        }
-        setFavorites(detailRoute.favorites);
-        isUpdating = false;
-    });
 }
 
 const shareAction = function() {
@@ -163,6 +193,18 @@ const shareAction = function() {
             console.log("Error")
         })
     } 
+}
+
+const deleteAction = function() {
+    var query = detailRoute.isPublic ? 'http://localhost:3000/public/routes/' : 'http://localhost:3000/private/routes/';
+    axios({
+        method: 'delete',
+        url: query + detailRoute.id,
+    }).then(function(response) {
+        if (getFilter() === "you") {
+            fetchRoutes();
+        }
+    });
 }
 
 $(function() {

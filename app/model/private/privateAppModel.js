@@ -1,5 +1,5 @@
 'user strict';
-var sql = require('./db.js');
+var sql = require('./privateDB.js');
 
 //Route object constructor
 var Route = function(route) {
@@ -70,4 +70,4 @@ Route.remove = function(id, result){
             }); 
 };
 
-module.exports= Route;
+module.exports = Route;
