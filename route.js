@@ -9,6 +9,7 @@ export default class Route {
         this.elevation = elevation
         this.favorites = favorites;
         this.user = user;
+        this.isPublic = true;
     }
 
 }

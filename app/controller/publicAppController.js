@@ -1,6 +1,6 @@
 'use strict';
 
-var Route = require('../model/appModel.js');
+var Route = require('../model/public/publicAppModel.js');
 
 exports.list_all_routes = function(req, res) {
   Route.getAllRoutes(function(err, route) {
@@ -13,8 +13,6 @@ exports.list_all_routes = function(req, res) {
     res.send(route);
   });
 };
-
-
 
 exports.create_a_route = function(req, res) {
   var new_route = new Route(req.body);

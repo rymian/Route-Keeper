@@ -21,6 +21,7 @@ var elevation;
 
 const setCompose = function() {
     composeName.val("");
+    composeSlider.prop('checked', true);
 
     setMap();
 }
@@ -223,12 +224,12 @@ const dismissComposeOverlay = function() {
 const publishRoute = function() {
     const name = titleCase(composeName.val());
 
-    if (name.length !== 0 && geometry != null) {
+    if (name.length !== 0 && geometry != null && firebase.auth().currentUser.displayName != null) {
         isPublic = composeSlider.is(':checked');
         var query = isPublic ? 'http://localhost:3000/public/routes/' : 'http://localhost:3000/private/routes/';
 
         const geometryJSON = JSON.stringify(geometry);
-        const user = "user";
+        const user = firebase.auth().currentUser.displayName;
         const favoritesJSON = JSON.stringify([]);
 
         axios({

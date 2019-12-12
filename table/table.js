@@ -36,7 +36,7 @@ export const fetchRoutes = function() {
 
     axios({
         method: 'get',
-        url: 'http://localhost:3000/public/routes',
+        url: 'http://localhost:3000/public/routes/',
     }).then(function(response) {
         const data = response.data;
         data.reverse().forEach(d => {
@@ -50,6 +50,39 @@ export const fetchRoutes = function() {
             const favorites = JSON.parse(d['favorites']);
 
             const newRoute = new Route(id, name, geometry, location, distance, elevation, favorites, user);
+            allRoutes.push(newRoute);
+        });
+
+        if (getFilter() === "you") {
+            fetchPrivateRoutes();
+        } else {
+            loadTable();
+        }
+    });
+}
+
+export const getRoutes = function() {
+    return allRoutes;
+}
+
+const fetchPrivateRoutes = function() {
+    axios({
+        method: 'get',
+        url: 'http://localhost:3000/private/routes/',
+    }).then(function(response) {
+        const data = response.data;
+        data.reverse().forEach(d => {
+            const id = d['id'];
+            const name = d['name'];
+            const geometry = JSON.parse(d['geometry']);
+            const user = d['user'];
+            const location = d['location'];
+            const distance = d['distance'];
+            const elevation = d['elevation'];
+            const favorites = JSON.parse(d['favorites']);
+
+            const newRoute = new Route(id, name, geometry, location, distance, elevation, favorites, user);
+            newRoute.isPublic = false;
             allRoutes.push(newRoute);
         });
 
@@ -76,10 +109,26 @@ const loadTable = function() {
     }
 };
 
+export const loadCustomTable = function(routes) {
+    if (allRoutes != null) {
+        table.empty();
+        lastSelectedId = 1;
+
+        routes.forEach(route => {
+            appendRoute(route);
+        })
+
+        setDetail(routes[0]);
+    }
+}
+
 const appendRoute = function(route) {
     let cell = renderRouteCell(route);
     table.append(cell);
     $(`#${route.id}`).on("click", selectRouteCell);
+    if (!route.isPublic) {
+        $(`#${route.id}`).addClass('private');
+    }
 }
 
 
@@ -89,12 +138,16 @@ const filter = function(route) {
             return true;
             break;
         case "favorites":
-            // TODO: use actual user name
-            return route.favorites.includes("User");
+            if (firebase.auth().currentUser.displayName != null) {
+                return route.favorites.includes(firebase.auth().currentUser.displayName);
+            } 
+            return false;
             break;
         case "you":
-            // TODO: use actual user name
-            return route.user === "user";
+            if (firebase.auth().currentUser.displayName != null) {
+                return route.user === firebase.auth().currentUser.displayName;
+            } 
+            return false;
             break;
     }
 
@@ -105,8 +158,17 @@ const filter = function(route) {
 
 const selectRouteCell = function(event) {
     let id = parseInt(this.id, 10);
-    if (lastSelectedId != id) {
-        let route = filteredRoutes.filter(route => {
+    if (getFilter() !== 'you') {
+        if (lastSelectedId != id) {
+            let route = filteredRoutes.filter(route => {
+                return route.id == id;
+            })[0]
+
+            lastSelectedId = id;
+            setDetail(route);
+        }
+    } else {
+        let route = allRoutes.filter(route => {
             return route.id == id;
         })[0]
 

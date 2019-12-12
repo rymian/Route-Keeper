@@ -68,6 +68,11 @@ const setFilterButtonStyle = function() {
     }
 }
 
+export const setFilter = function(filter) {
+    selectedFilter = filter;
+    setFilterButtonStyle();
+}
+
 $(function() {
     results.on("click", resultsAction);
     favorites.on("click", favoritesAction);

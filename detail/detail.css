@@ -76,8 +76,7 @@
     text-overflow: ellipsis;
     word-wrap: break-word;
     display: block;
-    line-height: 1em; /* a */
-    max-height: 2em;
+    line-height: 1.5em;
 }
 
 #detail-user, #detail-favorites {
@@ -142,7 +141,15 @@
 }
 
 #share-action {
+    margin-left: 0px;
+}
+
+#delete-action {
     margin-left: 16px;
+
+    background-color: var(--red-color, red);
+
+    color: white;
 }
 
 
