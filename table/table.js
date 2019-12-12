@@ -6,7 +6,7 @@ const table = $('#table-container');
 
 var allRoutes;
 var filteredRoutes;
-var lastSelectedId = 0;
+var lastSelectedId = 1;
 
 /* Render RouteCells */
 
@@ -30,22 +30,37 @@ const renderRouteCell = function(route) {
 
 /* Loads RouteCells into the table */
 
-const fetchRoutes = function() {
+export const fetchRoutes = function() {
     allRoutes = [];
     filteredRoutes = [];
 
-    for(var i=0; i < 36; i++) {
-        let route = new Route(`Route #${i+1}`, [[0.0,0.0]], 'Location', 0, 0);
-        route.id = i;
-        allRoutes.push(route);
-    }
+    axios({
+        method: 'get',
+        url: 'http://localhost:3000/public/routes',
+    }).then(function(response) {
+        const data = response.data;
+        data.reverse().forEach(d => {
+            const id = d['id'];
+            const name = d['name'];
+            const geometry = JSON.parse(d['geometry']);
+            const user = d['user'];
+            const location = d['location'];
+            const distance = d['distance'];
+            const elevation = d['elevation'];
+            const favorites = JSON.parse(d['favorites']);
 
-    loadTable();
+            const newRoute = new Route(id, name, geometry, location, distance, elevation, favorites, user);
+            allRoutes.push(newRoute);
+        });
+
+        loadTable();
+    });
 }
 
-export const loadTable = function() {
+const loadTable = function() {
     if (allRoutes != null) {
         table.empty();
+        lastSelectedId = 1;
         filteredRoutes = [];
 
         allRoutes.forEach(route => {
@@ -57,35 +72,16 @@ export const loadTable = function() {
 
         if (filteredRoutes.length != 0) {
             setDetail(filteredRoutes[0]);
-        }
+        } 
     }
 };
 
 const appendRoute = function(route) {
     let cell = renderRouteCell(route);
     table.append(cell);
-    table.on("click",".route-cell-card", selectRouteCell);
+    $(`#${route.id}`).on("click", selectRouteCell);
 }
 
-export const prependRoute = function(route) {
-    if (filteredRoutes == null) {
-        allRoutes = []
-        filteredRoutes = [];
-        route.id = 0;
-    } else {
-        route.id = allRoutes.length;
-    }
-    allRoutes.push(route);
-
-    if (filter(route)) {
-        let cell = renderRouteCell(route);
-        table.prepend(cell);
-        table.on("click",".route-cell-card", selectRouteCell);
-
-        lastSelectedId = route.id;
-        setDetail(route);
-    }
-}
 
 const filter = function(route) {
     switch (getFilter()) {
@@ -94,7 +90,7 @@ const filter = function(route) {
             break;
         case "favorites":
             // TODO: use actual user name
-            return route.favorites.includes("user");
+            return route.favorites.includes("User");
             break;
         case "you":
             // TODO: use actual user name
@@ -109,7 +105,6 @@ const filter = function(route) {
 
 const selectRouteCell = function(event) {
     let id = parseInt(this.id, 10);
-
     if (lastSelectedId != id) {
         let route = filteredRoutes.filter(route => {
             return route.id == id;
@@ -121,6 +116,5 @@ const selectRouteCell = function(event) {
 };
 
 $(function() {
-    // fetchRoutes()
-    loadTable();
+    fetchRoutes()
 });

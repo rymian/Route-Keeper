@@ -13,8 +13,7 @@ var Route = function(route) {
 };
 
 Route.createRoute = function (newRoute, result) {    
-        sql.query("INSERT INTO routes set ?", newRoute, function (err, res) {
-                
+        sql.query("INSERT INTO routes set ?", newRoute, function (err, res) { 
                 if (err) {
                     console.log("error: ", err);
                     result(err, null);
@@ -50,7 +49,7 @@ Route.getAllRoutes = function (result) {
 };
 
 Route.updateById = function(id, route, result){
-        sql.query("UPDATE routes SET route = ? WHERE id = ?", [route.name, id], function (err, res) {
+        sql.query("UPDATE routes SET name = ?, geometry = ?, location = ?, distance = ?, elevation = ?, user = ?, favorites = ? WHERE id = ?", [route.name, route.geometry, route.location, route.distance, route.elevation, route.user, route.favorites, id], function (err, res) {
                 if (err) {
                     console.log("error: ", err);
                     result(null, err);

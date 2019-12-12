@@ -1,19 +1,18 @@
 import Route from "../route.js";
-import { prependRoute } from "../table/table.js";
-// import { insertPublicRoute } from "../server.js";
-var inserts = require('../server.js');
-console.log(inserts);
+import { fetchRoutes } from "../table/table.js";
 
 const create = $('#create-item');
 const composeOverlay = $('#compose-overlay')
 const cancel = $('#cancel-action');
 const publish = $('#publish-action');
 const composeName = $('#compose-name');
+const composeSlider = $('#compose-slider');
 
 var map;
 var draw;
 
 var isMetric = false;
+var isPublic = true;
 
 var geometry;
 var location;
@@ -225,22 +224,35 @@ const publishRoute = function() {
     const name = titleCase(composeName.val());
 
     if (name.length !== 0 && geometry != null) {
-        console.log("Name: " + name);
-        console.log("Geometry: " + geometry.coordinates);
-        console.log("Location: " + location);
-        console.log("Distance: " + distance + "mi");
-        console.log("Elevation: " + elevation + "ft");
+        isPublic = composeSlider.is(':checked');
+        var query = isPublic ? 'http://localhost:3000/public/routes/' : 'http://localhost:3000/private/routes/';
 
-        const route = new Route(name, geometry, location, distance, elevation);
-        insertPublicRoute(route);
-        prependRoute(route);
-        dismissComposeOverlay();
+        const geometryJSON = JSON.stringify(geometry);
+        const user = "user";
+        const favoritesJSON = JSON.stringify([]);
+
+        axios({
+            method: 'post',
+            url: query,
+            data: {
+                "name": name,
+                "geometry": geometryJSON,
+                "location": location,
+                "distance": distance,
+                "elevation": elevation,
+                "user": user,
+                "favorites": favoritesJSON
+            }
+        }).then(function(response) {
+            fetchRoutes();
+            dismissComposeOverlay(); 
+        });
     } else {
         console.log("Please fill in required fields.");
     }
 }
 
-/* Helper */
+/* Helpers */
 
 function titleCase(str) {
     var splitStr = str.toLowerCase().split(' ');

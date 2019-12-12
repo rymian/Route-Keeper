@@ -1,4 +1,4 @@
-import {loadTable} from "../table/table.js"
+import {fetchRoutes} from "../table/table.js"
 
 const filter = $('#filter-container');
 const results = $('#filter-results');
@@ -12,21 +12,21 @@ const resultsAction = function() {
     selectedFilter = "results";
     setFilterButtonStyle();
 
-    loadTable();
+    fetchRoutes();
 }
 
 const favoritesAction = function() {
     selectedFilter = "favorites";
     setFilterButtonStyle();
 
-    loadTable();
+    fetchRoutes();
 }
 
 const youAction = function() {
     selectedFilter = "you";
     setFilterButtonStyle();
 
-    loadTable();
+    fetchRoutes();
 }
 
 export const getFilter = function() {
