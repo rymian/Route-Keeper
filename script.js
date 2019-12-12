@@ -64,9 +64,13 @@ const combRouteLocations = function() {
         }
     });
 
+    var locationsAdded = [];
     for(var i=0; i<matchingRoutes.length; i++) { 
-        searchSuggestionContainer.append(renderSearchSuggestion(matchingRoutes[i]));
-        $('.search-suggestion').on('click', suggestionAction);
+        if (!locationsAdded.includes(matchingRoutes[i].location)) {
+            locationsAdded.push(matchingRoutes[i].location)
+            searchSuggestionContainer.append(renderSearchSuggestion(matchingRoutes[i]));
+            $('.search-suggestion').on('click', suggestionAction);
+        }
     }
 }
 
